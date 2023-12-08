@@ -1,0 +1,50 @@
+buildscript {
+    ext.kotlin_version = '1.9.21'
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.google.gms:google-services:4.4.0"
+        // Add any other buildscript dependencies if needed
+    }
+}
+
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'dev.flutter.flutter-gradle-plugin'
+    id 'com.google.gms.google-services'
+}
+
+android {
+    compileSdkVersion flutter.compileSdkVersion
+    defaultConfig {
+        applicationId "com.example.lost_and_found_items"
+        minSdkVersion 19
+        targetSdkVersion flutter.targetSdkVersion
+        versionCode flutterVersionCode.toInteger() // Ensure flutterVersionCode is defined
+        versionName flutterVersionName
+    }
+
+    // Other Android configurations...
+
+    buildTypes {
+        release {
+            // Configure release build...
+        }
+    }
+}
+
+flutter {
+    source '../..'
+}
+
+dependencies {
+    implementation platform("com.google.firebase:firebase-bom:32.6.0")
+   implementation 'com.google.firebase:firebase-messaging'     
+   implementation 'com.google.firebase:firebase-analytics'
+}
+
