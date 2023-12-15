@@ -47,11 +47,14 @@ class _RegisterPageState extends State<RegisterPage> {
         await _fireStore.collection('user').doc(userCredential.user!.uid).set({
           'uid': userCredential.user!.uid,
           'email': email,
+          'username': emailController.text.split('@')[0] //  initial username
         });
       } else {
         // show error message
         showErrorMessage("Passwords don't match!");
       }
+
+      // create new document
 
       // pop the loading circle
       Navigator.pop(context);

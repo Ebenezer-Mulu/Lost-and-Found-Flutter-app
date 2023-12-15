@@ -1,8 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lost_and_found_items/components/list_tile.dart';
 import 'package:lost_and_found_items/pages/found_items.dart';
 import 'package:lost_and_found_items/pages/home_content.dart';
 import 'package:lost_and_found_items/pages/lost_item.dart';
+import 'package:lost_and_found_items/pages/profile.dart';
+import 'package:lost_and_found_items/pages/users.dart';
+import 'package:lost_and_found_items/pages/setting.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key});
@@ -13,6 +17,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final user = FirebaseAuth.instance.currentUser!;
+
   int _selectedIndex = 0;
 
   void _navigatorBar(int index) {
@@ -28,8 +33,11 @@ class _HomePageState extends State<HomePage> {
 
   final List<Widget> _pages = [
     HomeContent(),
+    const Profile(),
     LostItemPage(),
     FoundItems(),
+    Setting(),
+    Users(),
   ];
 
   @override
@@ -78,73 +86,59 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 25.0),
-                  child: ListTile(
-                    leading: const Icon(
-                      Icons.home,
-                      color: Colors.white,
-                    ),
-                    title: const Text(
-                      "Home",
-                      style: TextStyle(color: Colors.white),
-                    ),
+                  child: ListTiles(
+                    icon: Icons.home,
+                    text: "Home",
                     onTap: () => _navigatorBar(0),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 25.0),
-                  child: ListTile(
-                    leading: const Icon(
-                      Icons.home,
-                      color: Colors.white,
-                    ),
-                    title: const Text(
-                      "Lost Item",
-                      style: TextStyle(color: Colors.white),
-                    ),
+                  child: ListTiles(
+                    icon: Icons.person,
+                    text: "Profile",
                     onTap: () => _navigatorBar(1),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 25.0),
-                  child: ListTile(
-                    leading: const Icon(
-                      Icons.home,
-                      color: Colors.white,
-                    ),
-                    title: const Text(
-                      "Found Items",
-                      style: TextStyle(color: Colors.white),
-                    ),
+                  child: ListTiles(
+                    icon: Icons.lock,
+                    text: "Lost Item",
                     onTap: () => _navigatorBar(2),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 25.0),
-                  child: ListTile(
-                    leading: const Icon(
-                      Icons.settings,
-                      color: Colors.white,
-                    ),
-                    title: const Text(
-                      "Setting",
-                      style: TextStyle(color: Colors.white),
-                    ),
+                  child: ListTiles(
+                    icon: Icons.lock,
+                    text: "Found Item",
                     onTap: () => _navigatorBar(3),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 25.0),
+                  child: ListTiles(
+                    icon: Icons.settings,
+                    text: "Setting",
+                    onTap: () => _navigatorBar(4),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 25.0),
+                  child: ListTiles(
+                    icon: Icons.settings,
+                    text: "Users",
+                    onTap: () => _navigatorBar(5),
                   ),
                 ),
               ],
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 25.0, bottom: 16.0),
-              child: ListTile(
-                leading: const Icon(
-                  Icons.logout,
-                  color: Colors.white,
-                ),
-                title: const Text(
-                  "Logout",
-                  style: TextStyle(color: Colors.white),
-                ),
+              padding: const EdgeInsets.only(left: 25.0),
+              child: ListTiles(
+                icon: Icons.logout,
+                text: "Logout",
                 onTap: () => {signUserOut()},
               ),
             ),
