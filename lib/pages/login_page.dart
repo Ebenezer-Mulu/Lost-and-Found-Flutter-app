@@ -101,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                   controller: emailController,
                   hintText: "Email",
                   obscureText: false,
-                   keyboardType: TextInputType.emailAddress,
+                  keyboardType: TextInputType.emailAddress,
                 ),
                 const SizedBox(height: 25),
                 // password text field
@@ -109,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                   controller: passwordController,
                   hintText: "Password",
                   obscureText: true,
-                   keyboardType: TextInputType.visiblePassword,
+                  keyboardType: TextInputType.visiblePassword,
                 ),
                 // forgot password
                 const SizedBox(height: 10),
@@ -170,7 +170,7 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 25),
                 // Google sign-in image
                 GestureDetector(
-                  onTap: () => AuthService().signInwithGoogle(),
+                  onTap: () => AuthService().signInWithGoogle(),
                   child: const ImageHolder(
                     imagepath: 'lib/images/google.png',
                   ),

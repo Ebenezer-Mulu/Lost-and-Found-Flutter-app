@@ -92,7 +92,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(height: 25),
                 // logo
                 const Icon(
-                  Icons.abc,
+                  Icons.lock_sharp,
                   size: 100,
                 ),
                 // Welcome text
@@ -168,7 +168,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(height: 25),
                 // Google sign-in image
                 GestureDetector(
-                  onTap: () => AuthService().signInwithGoogle(),
+                  onTap: () => AuthService().signInWithGoogle(),
                   child: const ImageHolder(
                     imagepath: 'lib/images/google.png',
                   ),

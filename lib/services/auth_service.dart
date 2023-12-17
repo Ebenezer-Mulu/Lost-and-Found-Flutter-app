@@ -1,21 +1,40 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AuthService {
-  signInwithGoogle() async {
-    final GoogleSignInAccount? guser = await GoogleSignIn().signIn();
+  final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
-    // auth details from request
+  Future<UserCredential?> signInWithGoogle() async {
+    // Sign out the current Google account
+    await GoogleSignIn().signOut();
 
-    final GoogleSignInAuthentication gAuth = await guser!.authentication;
+    try {
+      final GoogleSignInAccount? guser = await GoogleSignIn().signIn();
 
-    // credential for user
+      if (guser == null) {
+        // The user canceled the sign-in
+        return null;
+      }
 
-    final credential = GoogleAuthProvider.credential(
-        accessToken: gAuth.accessToken, idToken: gAuth.idToken);
+      final GoogleSignInAuthentication gAuth = await guser.authentication;
 
-    // sign in
+      final credential = GoogleAuthProvider.credential(
+        accessToken: gAuth.accessToken,
+        idToken: gAuth.idToken,
+      );
 
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+      await _fireStore.collection('user').doc(guser.id).set({
+        'uid': guser.id,
+        'email': guser.email,
+        'username': guser.email.split('@')[0] //  initial username
+      });
+
+      // Sign in with the Google credentials
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    } catch (e) {
+      print("Error during Google Sign-In: $e");
+      return null;
+    }
   }
 }

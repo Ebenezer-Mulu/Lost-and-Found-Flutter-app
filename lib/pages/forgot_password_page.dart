@@ -24,15 +24,17 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       await FirebaseAuth.instance
           .sendPasswordResetEmail(email: _emailController.text.trim());
 
+      // ignore: use_build_context_synchronously
       showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
+          return const AlertDialog(
             content: Text("Password reset link sent! Check your email"),
           );
         },
       );
     } on FirebaseAuthException catch (e) {
+      // ignore: use_build_context_synchronously
       showDialog(
         context: context,
         builder: (context) {
@@ -48,9 +50,15 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.deepPurple[200],
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         elevation: 0,
-        title: const Text("Forgot Password"),
+        title: const Padding(
+          padding: EdgeInsets.only(left: 40.0),
+          child: Text(
+            "Forgot Password",
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
