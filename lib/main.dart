@@ -1,100 +1,30 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import '../components/text_box.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:lost_and_found_items/api/firebase_api.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'firebase_options.dart';
+import 'package:lost_and_found_items/pages/auth_page.dart';
 
-class Profile extends StatefulWidget {
-  const Profile({Key? key});
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
-  @override
-  State<Profile> createState() => _ProfileState();
+  FirebaseMessaging.onBackgroundMessage(FirebaseApi().handleBackgroundMessage);
+
+  await FirebaseApi().initNotifications();
+  runApp(const MyApp());
 }
 
-class _ProfileState extends State<Profile> {
-  final user = FirebaseAuth.instance.currentUser!;
-
-  // edit field
-  Future<void> editField(String field) async {
-    // Add your logic to edit the specified field
-  }
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Profile Page",
-          style: TextStyle(color: Colors.grey[900]),
-        ),
-      ),
-      body: StreamBuilder<DocumentSnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection("user")
-            .doc(user.email)
-            .snapshots(),
-        builder: (context, snapshot) {
-          print("Connection State: ${snapshot.connectionState}");
-          if (snapshot.connectionState == ConnectionState.active &&
-              snapshot.hasData) {
-            print("aa");
-
-            // Check if data is not null before casting
-            if (snapshot.data != null) {
-              final userData = snapshot.data!.data() as Map<String, dynamic>;
-              print("bb");
-              print("User email: ${user.email}");
-              print("af");
-              print("User Data: $userData");
-              print("Username from userData: ${userData["username"]}");
-
-              return ListView(
-                children: [
-                  const SizedBox(height: 50),
-                  const Icon(
-                    Icons.person,
-                    size: 100,
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    user.email ?? "No Email",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey[700]),
-                  ),
-                  const SizedBox(height: 50),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 25.0),
-                    child: Text(
-                      "My Details",
-                      style: TextStyle(color: Colors.grey[600]),
-                    ),
-                  ),
-                  TextBoxs(
-                    text: userData["username"] ?? "No Username",
-                    sectionName: "username",
-                    onPressed: () => editField('username'),
-                  ),
-                ],
-              );
-            } else {
-              print("Data is null");
-              // Handle the case where data is null
-              return const Center(child: CircularProgressIndicator());
-            }
-          } else if (snapshot.connectionState == ConnectionState.waiting) {
-            // Handle the waiting state
-            print("Waiting for data...");
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            print('Error fetching data: ${snapshot.error}');
-            return Center(
-              child: Text('Error: ${snapshot.error}'),
-            );
-          } else {
-            print("Unexpected state: ${snapshot.connectionState}");
-            return const Center(child: CircularProgressIndicator());
-          }
-        },
-      ),
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: AuthPage(),
     );
   }
 }

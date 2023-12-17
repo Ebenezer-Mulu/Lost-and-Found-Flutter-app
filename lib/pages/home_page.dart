@@ -43,6 +43,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         leading: Builder(
           builder: (context) {
@@ -62,13 +63,13 @@ class _HomePageState extends State<HomePage> {
             ),
             Text(
               user.email!,
-              style: TextStyle(fontSize: 10),
+              style: const TextStyle(fontSize: 10),
             ),
           ]),
         ],
       ),
       drawer: Drawer(
-        backgroundColor: const Color.fromARGB(255, 51, 49, 49),
+        backgroundColor: Theme.of(context).colorScheme.primary,
         child: Column(
           mainAxisAlignment: MainAxisAlignment
               .spaceBetween, // Align items at the top and bottom
