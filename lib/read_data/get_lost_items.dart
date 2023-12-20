@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:lost_and_found_items/pages/lost_item_details.dart';
+import 'package:lost_and_found_items/pages/lost_items/lost_item_details.dart';
 
 class GetLostItem extends StatelessWidget {
   final String documentId;
@@ -21,10 +21,8 @@ class GetLostItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     DocumentReference documentReference =
         FirebaseFirestore.instance.collection("lost_Items").doc(documentId);
-        
 
     return FutureBuilder<DocumentSnapshot>(
       future: documentReference.get(),
@@ -37,21 +35,21 @@ class GetLostItem extends StatelessWidget {
             if (data != null) {
               return GestureDetector(
                 onTap: () => navigateToLostItemDetails(context),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ListTile(
-                      title: Text('Lost Item: $documentId'),
+                child: SizedBox(
+                  width: 300,
+                  child: Card(
+                    child: ListTile(
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('Item Name: ${data['Item_Name']}'),
                           Text('Description: ${data['Description']}'),
                           Text('Location: ${data['Location']}'),
+                          Text('Date: ${data['Date']}'),
                         ],
                       ),
                     ),
-                  ],
+                  ),
                 ),
               );
             } else {

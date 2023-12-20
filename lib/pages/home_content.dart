@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:lost_and_found_items/components/button.dart';
 import 'package:lost_and_found_items/pages/data_fetch.dart';
-import 'package:lost_and_found_items/pages/view_lost_item.dart';
+import 'package:lost_and_found_items/pages/lost_items/lost_item_details.dart';
+import 'package:lost_and_found_items/pages/lost_items/view_lost_item.dart';
+import 'package:lost_and_found_items/read_data/get_lost_items.dart';
 
-class HomeContent extends StatelessWidget {
-  const HomeContent({Key? key}) : super(key: key);
+class Home extends StatelessWidget {
+  const Home({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,57 +16,78 @@ class HomeContent extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Center(
-              child: Text(
-                "Welcome + Name",
-                style: TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
             Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.only(top: 40.0),
               child: Center(
                 child: Text(
-                  "Discover Peace of Mind with our Lost and Found app ",
+                  "Welcome",
                   style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontSize: 20,
+                    fontSize: 40,
                     fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
                 ),
               ),
             ),
+            const SizedBox(height: 20),
+
+            Center(
+              child: Text(
+                "Find Retrieve Discover Reclaim Reassure ",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.primary,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+
             const SizedBox(height: 50),
-            FutureBuilder<List<String>>(
-              future: DataFetcher.getDocIds(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  if (snapshot.hasData) {
-                    return Expanded(
-                      child: ListView.builder(
+
+            SizedBox(
+              height: 150,
+              child: FutureBuilder<List<String>>(
+                future: DataFetcher.getDocIds(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
-                          return const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            // child:
-                            // GetLostItem(documentId: snapshot.data![index]),
-                          );
+                          String documentId = snapshot.data![index];
+
+                          // return GestureDetector(
+                          //   onTap: () {
+                          //     Navigator.push(
+                          //       context,
+                          //       MaterialPageRoute(
+                          //         builder: (context) =>
+                          //             LostItemDetails(documentId: documentId),
+                          //       ),
+                          //     );
+                          //   },
+                          //   child: Column(
+                          //     crossAxisAlignment: CrossAxisAlignment.start,
+                          //     children: [
+                          //       ListTile(
+                          //         title: Text('Lost Item: $documentId'),
+                          //         // Add more details here if needed
+                          //       ),
+                          //     ],
+                          //   ),
+                          // );
                         },
-                      ),
-                    );
+                      );
+                    } else {
+                      return const Text('No data available');
+                    }
                   } else {
-                    return const Text('No data available');
+                    return const CircularProgressIndicator();
                   }
-                } else {
-                  return const CircularProgressIndicator();
-                }
-              },
+                },
+              ),
             ),
 
             const SizedBox(height: 25),

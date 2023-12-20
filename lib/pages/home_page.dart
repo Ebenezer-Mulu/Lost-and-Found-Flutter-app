@@ -1,15 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lost_and_found_items/components/list_tile.dart';
-import 'package:lost_and_found_items/pages/found_items.dart';
+
 import 'package:lost_and_found_items/pages/home_content.dart';
-import 'package:lost_and_found_items/pages/lost_item.dart';
 import 'package:lost_and_found_items/pages/profile.dart';
 import 'package:lost_and_found_items/pages/users.dart';
 import 'package:lost_and_found_items/pages/setting.dart';
+import 'found_items/found_home.dart';
+import 'lost_items/lost_home_page.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key});
+  const HomePage({Key? key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -25,6 +26,16 @@ class _HomePageState extends State<HomePage> {
       _selectedIndex = index;
     });
     Navigator.pop(context);
+    _printSelectedPageName();
+  }
+
+  String _printSelectedPageName() {
+    if (_selectedIndex >= 0 && _selectedIndex < _pages.length) {
+      Widget selectedPage = _pages[_selectedIndex];
+      String pageName = selectedPage.toString();
+      return pageName;
+    }
+    return "Error";
   }
 
   void signUserOut() {
@@ -32,11 +43,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   final List<Widget> _pages = [
-    HomeContent(),
+    const Home(),
     const Profile(),
-    LostItemPage(),
-    FoundItems(),
-    Setting(),
+    LostHomePage(),
+    const FoundHomePage(),
+    const Setting(),
     Users(),
   ];
 
@@ -52,24 +63,33 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 Scaffold.of(context).openDrawer();
               },
+              color: Colors.white,
             );
           },
+        ),
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        title: Padding(
+          padding: const EdgeInsets.only(left: 25.0),
+          child: Text(
+            _printSelectedPageName(),
+            style: const TextStyle(color: Colors.white),
+          ),
         ),
         actions: [
           Row(children: [
             IconButton(
-              icon: const Icon(Icons.notification_important),
-              onPressed: () {},
-            ),
+                icon: const Icon(Icons.notification_important),
+                onPressed: () {},
+                color: Colors.white),
             Text(
               user.email!,
-              style: const TextStyle(fontSize: 10),
+              style: const TextStyle(fontSize: 10, color: Colors.white),
             ),
           ]),
         ],
       ),
       drawer: Drawer(
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         child: Column(
           mainAxisAlignment: MainAxisAlignment
               .spaceBetween, // Align items at the top and bottom

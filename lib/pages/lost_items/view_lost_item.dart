@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:lost_and_found_items/pages/data_fetch.dart';
 import 'package:lost_and_found_items/read_data/get_lost_items.dart';
 
@@ -25,21 +26,46 @@ class _ViewLostItemState extends State<ViewLostItem> {
   }
 
   Future<void> _initializeData() async {
-    docIds = await DataFetcher.getDocIds();
-    _filteredDocIdsController.add(docIds);
+    try {
+      docIds = await DataFetcher.getDocIds();
+      _filteredDocIdsController.add(docIds);
+    } catch (e) {
+      print('Error initializing data: $e');
+    }
   }
 
-  void searchItem() {
+  void searchItem() async {
     setState(() {
       search = _searchController.text.trim();
     });
 
-    List<String> filteredDocIds = docIds.where((docId) {
-      String itemName = docId;
-      return itemName.toLowerCase().contains(search.toLowerCase());
-    }).toList();
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('lost_Items')
+          .where('Item_Name', isGreaterThanOrEqualTo: search)
+          .where('Item_Name',
+              isLessThan: search + 'z') // assuming Item_Name is a string field
+          .get();
 
-    _filteredDocIdsController.add(filteredDocIds);
+      List<DocumentSnapshot> documents = querySnapshot.docs;
+
+      List<String> filteredDocIds = documents.map((doc) {
+        // Assuming you want to use a specific field as the identifier
+        return doc.id; // or doc['fieldName']
+      }).toList();
+
+      _filteredDocIdsController.add(filteredDocIds);
+    } catch (e) {
+      // Handle the error
+      print('Error searching items: $e');
+    }
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _filteredDocIdsController.close();
+    super.dispose();
   }
 
   @override
@@ -51,33 +77,34 @@ class _ViewLostItemState extends State<ViewLostItem> {
             pinned: true,
             expandedHeight: 80.0,
             flexibleSpace: Padding(
-              padding: const EdgeInsets.only(top: 40.0),
+              padding: const EdgeInsets.only(top: 10.0),
               child: Container(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.only(left: 25),
                 margin: const EdgeInsets.symmetric(horizontal: 10),
                 decoration: BoxDecoration(
-                  color: Colors.grey[100],
                   borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.grey),
                 ),
                 child: Row(
                   children: [
                     Expanded(
-                      child: TextField(
-                        controller: _searchController,
-                        style: const TextStyle(
-                            color: Color.fromARGB(255, 75, 54, 54)),
-                        decoration: const InputDecoration(
-                          contentPadding: EdgeInsets.only(top: 20),
-                          hintText: 'Search',
-                          hintStyle:
-                              TextStyle(color: Color.fromARGB(255, 75, 54, 54)),
-                          border: InputBorder.none,
+                      child: Center(
+                        child: TextField(
+                          controller: _searchController,
+                          style: const TextStyle(color: Colors.black),
+                          decoration: const InputDecoration(
+                            hintText: 'Search',
+                            border: InputBorder.none,
+                          ),
                         ),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: searchItem,
-                      child: const Icon(Icons.search, color: Colors.grey),
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: GestureDetector(
+                        onTap: searchItem,
+                        child: const Icon(Icons.search, color: Colors.grey),
+                      ),
                     ),
                   ],
                 ),
@@ -88,6 +115,18 @@ class _ViewLostItemState extends State<ViewLostItem> {
             child: StreamBuilder<List<String>>(
               stream: _filteredDocIdsController.stream,
               builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Error: ${snapshot.error}'),
+                  );
+                }
+
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+
                 final filteredDocIds = snapshot.data ?? docIds;
                 return ListView.builder(
                   itemCount: filteredDocIds.length,
@@ -96,7 +135,6 @@ class _ViewLostItemState extends State<ViewLostItem> {
                       padding: const EdgeInsets.all(8.0),
                       child: ListTile(
                         title: GetLostItem(documentId: filteredDocIds[index]),
-                        tileColor: Colors.grey[300],
                       ),
                     );
                   },

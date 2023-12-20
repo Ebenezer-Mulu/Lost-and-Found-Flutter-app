@@ -4,6 +4,7 @@ import 'package:lost_and_found_items/api/firebase_api.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'firebase_options.dart';
 import 'package:lost_and_found_items/pages/auth_page.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,6 +15,7 @@ void main() async {
   FirebaseMessaging.onBackgroundMessage(FirebaseApi().handleBackgroundMessage);
 
   await FirebaseApi().initNotifications();
+  await FirebaseAppCheck.instance.activate();
   runApp(const MyApp());
 }
 
