@@ -5,7 +5,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:lost_and_found_items/components/Text_form.dart';
-import 'package:lost_and_found_items/pages/found_items/view_found_item.dart';
 
 import '../../components/button.dart';
 
@@ -31,20 +30,23 @@ class _FoundItemsState extends State<FoundItems> {
 
     if (file == null) return;
 
-    String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
+    // Generate a more robust unique filename
+    String uniqueFileName =
+        '${DateTime.now().millisecondsSinceEpoch}_${UniqueKey()}';
 
-    // upload to Firebase
+    // Upload to Firebase
     Reference referenceRoot = FirebaseStorage.instance.ref();
     Reference referenceDirImages = referenceRoot.child('images');
 
-    // create a reference for the image
+    // Create a reference for the image
     Reference referenceImageToupload = referenceDirImages.child(uniqueFileName);
 
-    // store the file
+    // Store the file
     try {
       await referenceImageToupload.putFile(File(file.path));
       imageUrl = await referenceImageToupload.getDownloadURL();
-      print(imageUrl);
+      print('Image uploaded successfully. URL: $imageUrl');
+      // Handle the image URL as needed (e.g., update UI, save to database)
     } catch (e) {
       print('Error uploading image: $e');
     }
@@ -94,13 +96,13 @@ class _FoundItemsState extends State<FoundItems> {
       });
 
       // Close the loading indicator
+      // ignore: use_build_context_synchronously
       Navigator.pop(dialogContext);
 
       _itemNameController.clear();
       _descriptionController.clear();
       _locationController.clear();
     } catch (e) {
-
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

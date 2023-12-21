@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:lost_and_found_items/components/list_tile.dart';
 
 import 'package:lost_and_found_items/pages/home_content.dart';
-import 'package:lost_and_found_items/pages/profile.dart';
+import 'package:lost_and_found_items/pages/profile/edit_profile.dart';
 import 'package:lost_and_found_items/pages/users.dart';
 import 'package:lost_and_found_items/pages/setting.dart';
 import 'found_items/found_home.dart';
 import 'lost_items/lost_home_page.dart';
+import 'profile/profile.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key});
@@ -44,7 +45,7 @@ class _HomePageState extends State<HomePage> {
 
   final List<Widget> _pages = [
     const Home(),
-    const Profile(),
+    Profile(),
     LostHomePage(),
     const FoundHomePage(),
     const Setting(),

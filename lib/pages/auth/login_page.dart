@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:lost_and_found_items/components/inputfeild.dart';
 import 'package:lost_and_found_items/components/button.dart';
 import 'package:lost_and_found_items/components/imageholder.dart';
-import 'package:lost_and_found_items/pages/forgot_password_page.dart';
+import 'package:lost_and_found_items/pages/auth/forgot_password_page.dart';
 import 'package:lost_and_found_items/services/auth_service.dart';
 
 class LoginPage extends StatefulWidget {

@@ -40,7 +40,7 @@ class _ViewFoundItemState extends State<ViewFoundItem> {
                     padding: const EdgeInsets.all(8.0),
                     child: ListTile(
                       title: GetFoundItem(documentId: docIds[index]),
-                      tileColor: Colors.grey[300],
+                      // tileColor: Colors.grey[300],
                     ),
                   );
                 },

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lost_and_found_items/pages/login_page.dart';
+import 'package:lost_and_found_items/pages/auth/login_page.dart';
 import 'package:lost_and_found_items/pages/register_page.dart';
 
 class LoginOrRegisterPage extends StatefulWidget {

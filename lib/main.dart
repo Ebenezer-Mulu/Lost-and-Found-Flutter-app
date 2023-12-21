@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:lost_and_found_items/api/firebase_api.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'firebase_options.dart';
-import 'package:lost_and_found_items/pages/auth_page.dart';
+import 'package:lost_and_found_items/pages/auth/auth_page.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 
 void main() async {

@@ -16,14 +16,16 @@ dependencies:
   cloud_firestore: ^4.13.5
   firebase_auth: ^4.15.0
   image_picker: ^1.0.4
-  firebase_storage: ^11.5.3
+  firebase_storage: ^11.5.6
   firebase_app_check: ^0.2.1+8
   google_sign_in: ^6.2.1
   firebase_messaging: ^14.7.8
   firebase_analytics: ^10.7.3
   flutter_local_notifications: ^16.2.0
   bottom_navy_bar: ^6.0.0
-  syncfusion_flutter_datepicker: ^24.1.41
+  permission_handler: ^11.1.0
+  path_provider: ^2.0.14
+  scroll_snap_list: ^0.9.1
 
 dev_dependencies:
   flutter_test:
