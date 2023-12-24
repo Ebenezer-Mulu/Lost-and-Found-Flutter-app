@@ -71,47 +71,41 @@ class _ViewLostItemState extends State<ViewLostItem> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            pinned: true,
-            expandedHeight: 80.0,
-            flexibleSpace: Padding(
-              padding: const EdgeInsets.only(top: 10.0),
-              child: Container(
-                padding: const EdgeInsets.only(left: 25),
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.grey),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Center(
-                        child: TextField(
-                          controller: _searchController,
-                          style: const TextStyle(color: Colors.black),
-                          decoration: const InputDecoration(
-                            hintText: 'Search',
-                            border: InputBorder.none,
-                          ),
-                        ),
+      body: Column(
+        children: [
+          const SizedBox(height: 25),
+          Container(
+            padding: const EdgeInsets.only(left: 25),
+            margin: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: Colors.grey),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Center(
+                    child: TextField(
+                      controller: _searchController,
+                      style: const TextStyle(color: Colors.black),
+                      decoration: const InputDecoration(
+                        hintText: 'Search',
+                        border: InputBorder.none,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: GestureDetector(
-                        onTap: searchItem,
-                        child: const Icon(Icons.search, color: Colors.grey),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: GestureDetector(
+                    onTap: searchItem,
+                    child: const Icon(Icons.search, color: Colors.grey),
+                  ),
+                ),
+              ],
             ),
           ),
-          SliverFillRemaining(
+          Expanded(
             child: StreamBuilder<List<String>>(
               stream: _filteredDocIdsController.stream,
               builder: (context, snapshot) {

@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
     Profile(),
     LostHomePage(),
     const FoundHomePage(),
-    const Setting(),
+    Setting(),
     Users(),
   ];
 

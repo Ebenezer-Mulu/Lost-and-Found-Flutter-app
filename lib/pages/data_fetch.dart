@@ -5,7 +5,7 @@ class DataFetcher {
   static Future<List<String>> getDocIds() async {
     try {
       final snapshot =
-          await FirebaseFirestore.instance.collection("lost_Items").get();
+          await FirebaseFirestore.instance.collection("find_Items").get();
       return snapshot.docs.map((document) => document.id).toList();
     } catch (e) {
       // Handle any potential errors here

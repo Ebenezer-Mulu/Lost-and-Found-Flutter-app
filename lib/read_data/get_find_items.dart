@@ -26,13 +26,13 @@ class GetFoundItem extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // Loading state
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           // Error state
-          return Center(child: Text('Error loading data'));
+          return const Center(child: Text('Error loading data'));
         } else if (!snapshot.hasData || snapshot.data == null) {
           // Document does not exist
-          return Center(child: Text('Document does not exist'));
+          return const Center(child: Text('Document does not exist'));
         }
 
         // Data loaded successfully
@@ -44,55 +44,67 @@ class GetFoundItem extends StatelessWidget {
           child: SizedBox(
             width: 300,
             child: Card(
-              child: ListTile(
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (data['image'] != null)
-                      Container(
-                        width: 100,
-                        height: 100,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: NetworkImage(data['image']),
-                            fit: BoxFit.cover,
-                          ),
-                          borderRadius: BorderRadius.circular(8.0),
+              elevation: 4.0,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Hero(
+                    tag: 'imageHero-$documentId',
+                    child: Container(
+                      width: double.infinity,
+                      height: 200,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage(data['image']),
+                          fit: BoxFit.cover,
+                        ),
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(8.0),
+                          topRight: Radius.circular(8.0),
                         ),
                       ),
-                    SizedBox(height: 16.0),
-                    Row(
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Item Name:',
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            // fontWeight: FontWeight.bold,
-                          ),
+                        Row(
+                          children: [
+                            const Text(
+                              'Item Name:',
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              data['item_Name'],
+                              style: const TextStyle(fontSize: 16.0),
+                            ),
+                          ],
                         ),
-                        Text(
-                          data['item_Name'],
-                          style: const TextStyle(fontSize: 16.0),
+                        const SizedBox(height: 8.0),
+                        Row(
+                          children: [
+                            const Text(
+                              'Location:',
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              data['location'],
+                              style: const TextStyle(fontSize: 16.0),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                    Row(
-                      children: [
-                        const Text(
-                          'Location:',
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          data['location'],
-                          style: const TextStyle(fontSize: 16.0),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),

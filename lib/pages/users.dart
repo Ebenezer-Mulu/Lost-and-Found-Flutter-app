@@ -52,6 +52,7 @@ class Users extends StatelessWidget {
               builder: (context) => ChatPage(
                 receiverUserEmail: data['email'],
                 receiverUserID: data['uid'],
+                receiverUsername: data['username'],
               ),
             ),
           );

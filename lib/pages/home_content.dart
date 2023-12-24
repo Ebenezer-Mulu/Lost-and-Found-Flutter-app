@@ -5,6 +5,7 @@ import 'package:lost_and_found_items/pages/lost_items/view_lost_item.dart';
 import 'package:lost_and_found_items/read_data/get_lost_items.dart';
 
 import '../components/button.dart';
+import 'found_items/view_found_item.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -57,9 +58,7 @@ class Home extends StatelessWidget {
                         },
                         itemCount: documentIds.length,
                         itemSize: 150,
-                        onItemFocus: (int index) {
-                          // Handle item focus
-                        },
+                        onItemFocus: (int index) {},
                         dynamicItemSize: true,
                         scrollDirection: Axis.horizontal,
                       );
@@ -67,7 +66,7 @@ class Home extends StatelessWidget {
                       return const Text('No data available');
                     }
                   } else {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   }
                 },
               ),
@@ -77,7 +76,7 @@ class Home extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ViewLostItem()),
+                  MaterialPageRoute(builder: (context) => ViewFoundItem()),
                 );
               },
               text: "See More",
