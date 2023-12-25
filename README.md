@@ -1,2 +1,11 @@
 # Lost-and-Found-Flutter-app
-![Alt text](assets/login_page.png)
+![login Page authenticate with firebase ](assets/login_page.png)
+![Register Page authenticate with firebase ](assets/register_page.png)
+![Forgot Password sends link by using email ](assets/Password_reset.png)
+![Update password ](assets/change_password.png)
+![Home Page ](assets/home_page.png)
+![Report found item  ](assets/found_form.png)
+![Report lost item ](assets/lost_form.png)
+![Edit user Profile ](assets/user_details.png)
+![Display all user ](assets/user_list.png)
+![chat page](assets/chat_page.png)
